@@ -52,7 +52,7 @@
             font-size: 1.1rem;
         }
 
-        /* Área de Upload e Download (Dashboard Central) */
+        /* Área do Dashboard */
         .dashboard-container {
             background: var(--bg-card);
             border: 1px solid #334155;
@@ -102,18 +102,12 @@
             transition: transform 0.2s, box-shadow 0.2s;
             border: none;
             font-size: 1rem;
-            opacity: 0.6;
-            pointer-events: none; /* Desativado até haver ficheiro */
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
         }
 
-        .btn-download.active {
-            opacity: 1;
-            pointer-events: auto;
-            box-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
-        }
-
-        .btn-download.active:hover {
+        .btn-download:hover {
             transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
         }
 
         .file-status {
@@ -123,7 +117,7 @@
             display: none;
         }
 
-        /* Secção dos Membros do Grupo */
+        /* Secção dos Membros */
         .group-section {
             width: 100%;
             max-width: 1000px;
@@ -134,7 +128,6 @@
             margin-bottom: 1.5rem;
             text-align: center;
             color: var(--texto-claro);
-            position: relative;
         }
 
         .grid-membros {
@@ -188,6 +181,7 @@
         .card-membro:nth-child(even)::before {
             background: var(--neon-verde);
         }
+        
         .card-membro:nth-child(even) .avatar {
             color: var(--neon-verde);
         }
@@ -217,7 +211,6 @@
         <p>Acesso ao Dashboard e Projeto Académico</p>
     </header>
 
-    <!-- Contentor Central do Excel -->
     <div class="dashboard-container">
         <div class="upload-section" onclick="document.getElementById('excel-file').click()">
             <div class="upload-icon">📊</div>
@@ -226,54 +219,46 @@
             <input type="file" id="excel-file" accept=".xlsx, .xls">
         </div>
 
-        <button id="download-btn" class="btn-download">
-            📥 Baixar Ficheiro Excel (Turma)
-        </button>
+        <a id="download-btn" href="./dashboard.xlsx" download="Dashboard_Contabilidade_Grupo.xlsx" class="btn-download">
+            📥 Baixar Ficheiro Excel
+        </a>
 
-        <div id="file-status" class="file-status">✓ Ficheiro carregado com sucesso e pronto para a turma!</div>
+        <div id="file-status" class="file-status">✓ Ficheiro carregado com sucesso!</div>
     </div>
 
-    <!-- Secção de Membros -->
     <section class="group-section">
         <h2>Membros do Grupo</h2>
         <div class="grid-membros">
-            
             <div class="card-membro">
                 <div class="avatar">F</div>
                 <h3>Fabião</h3>
                 <p>Estudante / Dev</p>
             </div>
-
             <div class="card-membro">
                 <div class="avatar">N</div>
                 <h3>Nádia</h3>
                 <p>Estudante</p>
             </div>
-
             <div class="card-membro">
                 <div class="avatar">C</div>
                 <h3>Colen</h3>
                 <p>Estudante</p>
             </div>
-
             <div class="card-membro">
                 <div class="avatar">E</div>
                 <h3>Edite</h3>
                 <p>Estudante</p>
             </div>
-
             <div class="card-membro">
                 <div class="avatar">D</div>
                 <h3>Domingos</h3>
                 <p>Estudante</p>
             </div>
-
             <div class="card-membro">
                 <div class="avatar">R</div>
                 <h3>Rita</h3>
                 <p>Estudante</p>
             </div>
-
         </div>
     </section>
 
@@ -282,38 +267,21 @@
         const downloadBtn = document.getElementById('download-btn');
         const fileStatus = document.getElementById('file-status');
 
-        let fileDataUrl = "";
-        let fileName = "dashboard_grupo.xlsx";
-
-        // JS Dinâmico para capturar o ficheiro local
         fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                fileName = file.name;
                 const reader = new FileReader();
                 
                 reader.onload = function(event) {
-                    fileDataUrl = event.target.result;
+                    // Se o usuário subir um novo arquivo, substitui o "./dashboard.xlsx" em tempo real
+                    downloadBtn.href = event.target.result;
+                    downloadBtn.download = file.name;
                     
-                    // Ativa o botão de download com efeito visual lindo
-                    downloadBtn.classList.add('active');
                     fileStatus.style.display = 'block';
-                    fileStatus.innerText = `✓ Ficheiro "${fileName}" pronto para partilha!`;
+                    fileStatus.innerText = `✓ Ficheiro "${file.name}" pronto para baixar!`;
                 };
                 
                 reader.readAsDataURL(file);
-            }
-        });
-
-        // Função de download imediata e fácil
-        downloadBtn.addEventListener('click', function() {
-            if (fileDataUrl) {
-                const link = document.createElement('a');
-                link.href = fileDataUrl;
-                link.download = fileName;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
             }
         });
     </script>
