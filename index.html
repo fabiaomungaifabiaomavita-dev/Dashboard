@@ -33,7 +33,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             animation: fadeIn 1s ease-in-out;
         }
 
@@ -50,6 +50,131 @@
         header p {
             color: var(--texto-mutado);
             font-size: 1.1rem;
+        }
+
+        /* Menu Dinâmico dos Membros (Dropdown) */
+        .menu-membros-container {
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 100;
+        }
+
+        .btn-menu {
+            background: rgba(30, 41, 59, 0.7);
+            color: var(--texto-claro);
+            border: 1px solid #334155;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-menu:hover, .menu-membros-container.active .btn-menu {
+            border-color: var(--neon-azul);
+            background: var(--bg-card);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-menu::after {
+            content: '▼';
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-membros-container.active .btn-menu::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-membros {
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: #111827;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 1.2rem;
+            width: 300px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Efeito Hover para Desktop */
+        @media (min-width: 1025px) {
+            .menu-membros-container:hover .dropdown-membros {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+            .menu-membros-container:hover .btn-menu::after {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* Classe ativa controlada por JS para Mobile/Clique */
+        .menu-membros-container.active .dropdown-membros {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .lista-membros {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            list-style: none;
+        }
+
+        .item-membro {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.6rem 0.8rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
+            border-left: 3px solid var(--neon-azul);
+            text-align: left;
+        }
+
+        .item-membro:nth-child(even) {
+            border-left-color: var(--neon-verde);
+        }
+
+        .mini-avatar {
+            width: 32px;
+            height: 32px;
+            background: #334155;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: var(--neon-azul);
+        }
+
+        .item-membro:nth-child(even) .mini-avatar {
+            color: var(--neon-verde);
+        }
+
+        .membro-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .membro-info p {
+            font-size: 0.75rem;
+            color: var(--texto-mutado);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Área do Dashboard */
@@ -117,90 +242,98 @@
             display: none;
         }
 
-        /* Secção dos Membros */
-        .group-section {
+        /* Estilos do Rodapé (Footer) incorporados */
+        .main-footer {
+            background-color: #1a1c1e;
+            color: #cdced0;
+            padding: 35px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            border-top: 3px solid #2a2c2e;
+            margin-top: auto;
             width: 100%;
-            max-width: 1000px;
         }
 
-        .group-section h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
             text-align: center;
-            color: var(--texto-claro);
         }
 
-        .grid-membros {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
+        .footer-top .copyright {
+            margin: 0 0 10px 0;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            color: #8a8d90;
         }
 
-        .card-membro {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: transform 0.3s, border-color 0.3s;
-            position: relative;
-            overflow: hidden;
+        .footer-middle .developer-credit {
+            margin: 0 0 15px 0;
+            font-size: 15px;
         }
 
-        .card-membro::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--neon-azul);
+        .footer-middle .developer-credit .heart {
+            color: #e24a4a;
+            display: inline-block;
         }
 
-        .card-membro:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-azul);
-            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.1);
+        .footer-middle .developer-credit a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed #4a90e2;
+            padding-bottom: 2px;
+            transition: all 0.2s ease;
         }
 
-        .avatar {
-            width: 70px;
-            height: 70px;
-            background: #334155;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--neon-azul);
-            border: 2px solid #475569;
+        .footer-middle .developer-credit a:hover {
+            color: #4a90e2;
+            border-bottom-style: solid;
         }
 
-        .card-membro:nth-child(even)::before {
-            background: var(--neon-verde);
-        }
-        
-        .card-membro:nth-child(even) .avatar {
-            color: var(--neon-verde);
+        .footer-bottom .footer-links {
+            font-style: normal;
+            margin-top: 15px;
         }
 
-        .card-membro h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
+        .footer-bottom .footer-links a {
+            color: #a0a5a8;
+            text-decoration: none;
+            margin: 0 8px;
+            display: inline-block;
+            transition: color 0.2s ease;
         }
 
-        .card-membro p {
-            font-size: 0.85rem;
-            color: var(--texto-mutado);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .footer-bottom .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom .footer-links a.whatsapp-btn:hover {
+            color: #25d366;
+        }
+
+        .footer-bottom .separator {
+            color: #44484b;
+            user-select: none;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .footer-bottom .footer-links a {
+                display: block;
+                margin: 10px 0;
+            }
+            .footer-bottom .separator {
+                display: none;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -210,6 +343,56 @@
         <h1>Portefólio de Grupo</h1>
         <p>Acesso ao Dashboard e Projeto Académico</p>
     </header>
+
+    <div class="menu-membros-container" id="menuMembrosContainer">
+        <button class="btn-menu" id="btnMenuMembros">Ver Membros do Grupo</button>
+        <div class="dropdown-membros">
+            <ul class="lista-membros">
+                <li class="item-membro">
+                    <div class="mini-avatar">F</div>
+                    <div class="membro-info">
+                        <h4>Fabião</h4>
+                        <p>Estudante / Dev</p>
+                    </div>
+                </li>
+                <li class="item-membro">
+                    <div class="mini-avatar">N</div>
+                    <div class="membro-info">
+                        <h4>Nádia</h4>
+                        <p>Estudante</p>
+                    </div>
+                </li>
+                <li class="item-membro">
+                    <div class="mini-avatar">C</div>
+                    <div class="membro-info">
+                        <h4>Colen</h4>
+                        <p>Estudante</p>
+                    </div>
+                </li>
+                <li class="item-membro">
+                    <div class="mini-avatar">E</div>
+                    <div class="membro-info">
+                        <h4>Edite</h4>
+                        <p>Estudante</p>
+                    </div>
+                </li>
+                <li class="item-membro">
+                    <div class="mini-avatar">D</div>
+                    <div class="membro-info">
+                        <h4>Domingos</h4>
+                        <p>Estudante</p>
+                    </div>
+                </li>
+                <li class="item-membro">
+                    <div class="mini-avatar">R</div>
+                    <div class="membro-info">
+                        <h4>Rita</h4>
+                        <p>Estudante</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <div class="dashboard-container">
         <div class="upload-section" onclick="document.getElementById('excel-file').click()">
@@ -226,43 +409,57 @@
         <div id="file-status" class="file-status">✓ Ficheiro carregado com sucesso!</div>
     </div>
 
-    <section class="group-section">
-        <h2>Membros do Grupo</h2>
-        <div class="grid-membros">
-            <div class="card-membro">
-                <div class="avatar">F</div>
-                <h3>Fabião</h3>
-                <p>Estudante / Dev</p>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <p class="copyright">&copy; 2026 <strong>Fabião Mavita</strong>. Todos os direitos reservados.</p>
             </div>
-            <div class="card-membro">
-                <div class="avatar">N</div>
-                <h3>Nádia</h3>
-                <p>Estudante</p>
+
+            <div class="footer-middle">
+                <p class="developer-credit">
+                    Desenvolvido com <span class="heart">❤️</span> por 
+                    <a href="https://github.com/FABIAO-MUNGAI" target="_blank" rel="noopener noreferrer" title="Visitar o meu GitHub">
+                        Fabião Mungai Fabião Mavita
+                    </a>
+                </p>
             </div>
-            <div class="card-membro">
-                <div class="avatar">C</div>
-                <h3>Colen</h3>
-                <p>Estudante</p>
-            </div>
-            <div class="card-membro">
-                <div class="avatar">E</div>
-                <h3>Edite</h3>
-                <p>Estudante</p>
-            </div>
-            <div class="card-membro">
-                <div class="avatar">D</div>
-                <h3>Domingos</h3>
-                <p>Estudante</p>
-            </div>
-            <div class="card-membro">
-                <div class="avatar">R</div>
-                <h3>Rita</h3>
-                <p>Estudante</p>
+
+            <div class="footer-bottom">
+                <address class="footer-links">
+                    <a href="mailto:fabiaomungai@gmail.com" title="Enviar E-mail">
+                        📧 fabiaomungai@gmail.com
+                    </a>
+                    <span class="separator">|</span>
+                    <a href="https://wa.me/258842356951?text=Ol%C3%A1%20Fabi%C3%A3o,%20vi%20o%20teu%20site!" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" title="Falar no WhatsApp">
+                        💬 WhatsApp: +258 84 235 6951
+                    </a>
+                    <span class="separator">|</span>
+                    <a href="https://bucolic-salmiakki-8053ee.netlify.app/" target="_blank" rel="noopener noreferrer" title="Ver Portfólio">
+                        🌐 Portfólio Web
+                    </a>
+                </address>
             </div>
         </div>
-    </section>
+    </footer>
 
     <script>
+        // Lógica do Menu Dropdown (Clique/Touch para Mobile)
+        const menuContainer = document.getElementById('menuMembrosContainer');
+        const btnMenuMembros = document.getElementById('btnMenuMembros');
+
+        btnMenuMembros.addEventListener('click', function(e) {
+            e.stopPropagation();
+            menuContainer.classList.toggle('active');
+        });
+
+        // Fecha o menu caso o usuário clique fora dele
+        document.addEventListener('click', function(e) {
+            if (!menuContainer.contains(e.target)) {
+                menuContainer.classList.remove('active');
+            }
+        });
+
+        // Lógica de Upload do Ficheiro Excel
         const fileInput = document.getElementById('excel-file');
         const downloadBtn = document.getElementById('download-btn');
         const fileStatus = document.getElementById('file-status');
@@ -273,7 +470,6 @@
                 const reader = new FileReader();
                 
                 reader.onload = function(event) {
-                    // Se o usuário subir um novo arquivo, substitui o "./dashboard.xlsx" em tempo real
                     downloadBtn.href = event.target.result;
                     downloadBtn.download = file.name;
                     
@@ -285,6 +481,5 @@
             }
         });
     </script>
-
 </body>
 </html>
