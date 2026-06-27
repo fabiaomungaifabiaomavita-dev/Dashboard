@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portefólio do Grupo | Dashboard Académico</title>
+    <style>
+        :root {
+            --bg-principal: #0f172a;
+            --bg-card: #1e293b;
+            --neon-azul: #38bdf8;
+            --neon-verde: #4ade80;
+            --texto-claro: #f8fafc;
+            --texto-mutado: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, var(--neon-azul), var(--neon-verde));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--texto-mutado);
+            font-size: 1.1rem;
+        }
+
+        /* Área de Upload e Download (Dashboard Central) */
+        .dashboard-container {
+            background: var(--bg-card);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .upload-section {
+            border: 2px dashed #475569;
+            border-radius: 12px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-section:hover {
+            border-color: var(--neon-azul);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .upload-section input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0284c7, #16a34a);
+            color: white;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            font-size: 1rem;
+            opacity: 0.6;
+            pointer-events: none; /* Desativado até haver ficheiro */
+        }
+
+        .btn-download.active {
+            opacity: 1;
+            pointer-events: auto;
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
+        }
+
+        .btn-download.active:hover {
+            transform: translateY(-2px);
+        }
+
+        .file-status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--neon-verde);
+            display: none;
+        }
+
+        /* Secção dos Membros do Grupo */
+        .group-section {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .group-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--texto-claro);
+            position: relative;
+        }
+
+        .grid-membros {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card-membro {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-membro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--neon-azul);
+        }
+
+        .card-membro:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-azul);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.1);
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            background: #334155;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--neon-azul);
+            border: 2px solid #475569;
+        }
+
+        .card-membro:nth-child(even)::before {
+            background: var(--neon-verde);
+        }
+        .card-membro:nth-child(even) .avatar {
+            color: var(--neon-verde);
+        }
+
+        .card-membro h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-membro p {
+            font-size: 0.85rem;
+            color: var(--texto-mutado);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Portefólio de Grupo</h1>
+        <p>Acesso ao Dashboard e Projeto Académico</p>
+    </header>
+
+    <!-- Contentor Central do Excel -->
+    <div class="dashboard-container">
+        <div class="upload-section" onclick="document.getElementById('excel-file').click()">
+            <div class="upload-icon">📊</div>
+            <h3>Carregar Dashboard Excel</h3>
+            <p style="color: var(--texto-mutado); font-size: 0.9rem; margin-top: 5px;">Clique para selecionar o ficheiro local do seu PC</p>
+            <input type="file" id="excel-file" accept=".xlsx, .xls">
+        </div>
+
+        <button id="download-btn" class="btn-download">
+            📥 Baixar Ficheiro Excel (Turma)
+        </button>
+
+        <div id="file-status" class="file-status">✓ Ficheiro carregado com sucesso e pronto para a turma!</div>
+    </div>
+
+    <!-- Secção de Membros -->
+    <section class="group-section">
+        <h2>Membros do Grupo</h2>
+        <div class="grid-membros">
+            
+            <div class="card-membro">
+                <div class="avatar">F</div>
+                <h3>Fabião</h3>
+                <p>Estudante / Dev</p>
+            </div>
+
+            <div class="card-membro">
+                <div class="avatar">N</div>
+                <h3>Nádia</h3>
+                <p>Estudante</p>
+            </div>
+
+            <div class="card-membro">
+                <div class="avatar">C</div>
+                <h3>Colen</h3>
+                <p>Estudante</p>
+            </div>
+
+            <div class="card-membro">
+                <div class="avatar">E</div>
+                <h3>Edite</h3>
+                <p>Estudante</p>
+            </div>
+
+            <div class="card-membro">
+                <div class="avatar">D</div>
+                <h3>Domingos</h3>
+                <p>Estudante</p>
+            </div>
+
+            <div class="card-membro">
+                <div class="avatar">R</div>
+                <h3>Rita</h3>
+                <p>Estudante</p>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        const fileInput = document.getElementById('excel-file');
+        const downloadBtn = document.getElementById('download-btn');
+        const fileStatus = document.getElementById('file-status');
+
+        let fileDataUrl = "";
+        let fileName = "dashboard_grupo.xlsx";
+
+        // JS Dinâmico para capturar o ficheiro local
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileName = file.name;
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    fileDataUrl = event.target.result;
+                    
+                    // Ativa o botão de download com efeito visual lindo
+                    downloadBtn.classList.add('active');
+                    fileStatus.style.display = 'block';
+                    fileStatus.innerText = `✓ Ficheiro "${fileName}" pronto para partilha!`;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Função de download imediata e fácil
+        downloadBtn.addEventListener('click', function() {
+            if (fileDataUrl) {
+                const link = document.createElement('a');
+                link.href = fileDataUrl;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    </script>
+
+</body>
+</html>
